@@ -1,0 +1,15 @@
+{
+  "name": "revora-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm --workspace=backend run dev",
+    "dev:frontend": "npm --workspace=frontend run dev",
+    "build": "npm run build --workspaces",
+    "test": "npm --workspace=backend run test"
+  }
+}
