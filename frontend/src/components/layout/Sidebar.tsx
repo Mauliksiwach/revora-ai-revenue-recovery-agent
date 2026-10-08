@@ -38,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "Recovery Opportunities",
       icon: Sparkles,
       phase: "Phase 3",
-      ready: false,
+      ready: true,
     },
     {
       id: "revora_agent",

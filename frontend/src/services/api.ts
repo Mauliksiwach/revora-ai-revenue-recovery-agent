@@ -6,6 +6,7 @@ import type {
   TransactionFilterState,
 } from "../types/index";
 import type { DetectionResult } from "../types/incident";
+import type { OpportunitySummary, OpportunityPriority } from "../types/opportunity";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -85,6 +86,23 @@ export async function regenerateSimulationData(count = 1200): Promise<void> {
 export async function fetchDetectionResults(): Promise<DetectionResult> {
   const res = await fetch(`${API_BASE}/intelligence/detect`);
   if (!res.ok) throw new Error("Failed to run Revora Intelligence detection");
+  const json = await res.json();
+  return json.data;
+}
+
+// Phase 3: Recovery Opportunity Scoring Engine
+export async function fetchRecoveryOpportunities(params?: {
+  priority?: OpportunityPriority;
+  minScore?: number;
+  search?: string;
+}): Promise<OpportunitySummary> {
+  const query = new URLSearchParams();
+  if (params?.priority) query.append("priority", params.priority);
+  if (params?.minScore) query.append("minScore", String(params.minScore));
+  if (params?.search) query.append("search", params.search);
+
+  const res = await fetch(`${API_BASE}/opportunities?${query.toString()}`);
+  if (!res.ok) throw new Error("Failed to fetch recovery opportunities");
   const json = await res.json();
   return json.data;
 }

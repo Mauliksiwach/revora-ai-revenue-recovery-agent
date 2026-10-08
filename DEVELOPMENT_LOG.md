@@ -161,4 +161,61 @@ This document maintains a continuous, detailed technical record of every develop
 - `feat(phase-2): add AI revenue detective`
 
 ### Next phase:
-- **Phase 3: Recovery Opportunity Scoring & Strategy Engine** (Payment recovery probability scoring, customer sensitivity rules, strategy assignment, and Recovery Opportunities dashboard).
+- **Phase 3: Recovery Opportunity Scoring & Strategy Engine** (Completed)
+
+---
+
+## PHASE 3 — CUSTOMER INTENT & RECOVERY SCORE ENGINE
+
+**Date:** 2026-08-29  
+**Objective:** Implement the dynamic recovery probability engine ($P_{recovery}$), sub-score factor weightings, estimated recoverable revenue calculations, strategy assignment engine, and interactive Recovery Opportunities dashboard.
+
+### Features implemented:
+1. **Recovery Probability Engine (`RecoveryScoringService`)**:
+   - Built dynamic recovery score algorithm computing probability percentage ($0\% \to 100\%$) for every failed payment.
+   - **Failure Category Recoverability Score ($S_{category}$, 35% weight)**: Maps intrinsic recoverability per failure reason code (OTP drops = 90, Checkout abandonment = 82, Timeout = 75, Mandates = 70, Insufficient funds = 25).
+   - **Customer History & LTV ($S_{history}$, 30% weight)**: Factors total orders and lifetime spend to favor repeat, high-LTV buyers.
+   - **Recency Decay ($S_{recency}$, 20% weight)**: Applies time decay curve favoring immediate response within 15 minutes.
+   - **Amount Elasticity ($S_{amount}$, 15% weight)**: Accounts for transaction size elasticity.
+   - Computes `estimatedRecoverableInr` = $\text{amountInr} \times (P_{recovery} / 100)$.
+   - Classifies priority into `HIGH` ($\ge 75\%$), `MEDIUM` ($50\%-74\%$), and `LOW` ($<50\%$).
+2. **Strategy Assignment Engine**:
+   - Maps failed transaction profiles to candidate recovery strategies:
+     - High ticket ($\ge \text{₹50,000}$) $\implies$ `CONCIERGE_OUTREACH`
+     - 2FA/OTP drop $\implies$ `IMMEDIATE_PAYMENT_LINK`
+     - Abandoned cart $\implies$ `WHATSAPP_NUDGE`
+     - Subscription mandate failure $\implies$ `SMART_RETRY`
+     - Insufficient balance / Card limit $\implies$ `EMAIL_RECOVERY`
+     - Active bank outage (Phase 2 integration) $\implies$ `SMART_SILENCE`
+3. **REST Endpoints**:
+   - `GET /api/v1/opportunities`: Returns opportunity feed, aggregate recoverable metrics, priority statistics, and supports priority/search filtering.
+   - `GET /api/v1/opportunities/:id`: Returns single opportunity metadata and factor weights.
+4. **Recovery Opportunities Dashboard (`OpportunitiesDashboard` & `OpportunityCard`)**:
+   - Interactive dashboard featuring KPI summary cards (Est. Recoverable Revenue, Total Opportunities, Avg Score, High Priority count).
+   - Priority filter tab controls and instant search input.
+   - Expandable `OpportunityCard` displaying score badge, priority tag, strategy pill, estimated recoverable INR, customer LTV, and full factor score breakdown grid.
+
+### Backend changes:
+- Created `backend/src/types/opportunity.ts`.
+- Created `backend/src/services/recoveryScoringService.ts`.
+- Created `backend/src/controllers/opportunityController.ts`.
+- Updated `backend/src/routes/api.ts` mounting `/opportunities`.
+- Created `backend/tests/recoveryScoring.test.ts` with 8 automated Vitest tests.
+
+### Frontend changes:
+- Created `frontend/src/types/opportunity.ts`.
+- Updated `frontend/src/services/api.ts` with `fetchRecoveryOpportunities()`.
+- Created `frontend/src/components/opportunities/OpportunityCard.tsx`.
+- Created `frontend/src/components/opportunities/OpportunitiesDashboard.tsx`.
+- Updated `frontend/src/components/layout/Sidebar.tsx` enabling Phase 3 navigation (`ready: true`).
+- Updated `frontend/src/App.tsx` handling `activeTab === "recovery_opportunities"`.
+
+### Verification & Testing:
+- Ran backend test suite: **28/28 passing tests** (including 8 new recovery scoring tests).
+- Ran frontend Vite build: zero errors, 2227 modules compiled cleanly in 6.13s.
+
+### Git commit:
+- `feat(phase-3): add recovery opportunity scoring and strategy engine`
+
+### Next phase:
+- **Phase 4: Revora Agent** (Autonomous bounded execution engine, policy gates, cooldown enforcement, human approval queue, and Revora Agent workspace view).

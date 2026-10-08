@@ -41,17 +41,32 @@ When Revora Intelligence detects an **`ISSUER_OUTAGE`** or **`MULTI_RAIL_FAILURE
 
 ---
 
-## 3. Recovery Probability Scoring Model (Phase 3 Scaffolding)
+## 3. Recovery Probability Scoring Model (Phase 3 Implemented)
 
-The recovery probability $P_{recovery}$ is calculated dynamically using weighted behavioral signals:
+The recovery probability $P_{recovery}$ is calculated dynamically using weighted behavioral signals ($0 \to 100\%$):
 
-$$P_{recovery} = w_1 \cdot S_{history} + w_2 \cdot S_{category} + w_3 \cdot S_{amount} + w_4 \cdot S_{recency}$$
+$$P_{recovery} = 0.35 \cdot S_{category} + 0.30 \cdot S_{history} + 0.20 \cdot S_{recency} + 0.15 \cdot S_{amount}$$
 
 Where:
-- **$S_{history}$**: Customer lifetime value and historical payment success ratio ($0.0 \to 1.0$).
-- **$S_{category}$**: Baseline recoverability of the failure code (e.g., OTP timeout is highly recoverable $0.85$, while chronic insufficient funds is low $0.20$).
-- **$S_{amount}$**: Transaction size elasticity factor.
-- **$S_{recency}$**: Time elapsed since failure (decay function where immediate response within 15 min has highest conversion).
+- **$S_{category}$ (35% Weight)**: Failure reason recoverability score ($0-100$). OTP/2FA drop = $90$, Checkout abandonment = $82$, Timeout = $75$, Mandates = $70$, Card limit = $58$, Issuer outage = $40$, Insufficient funds = $25$.
+- **$S_{history}$ (30% Weight)**: Customer LTV and order frequency. $>10$ orders / $\ge \text{₹25,000}$ LTV = $95$; $\ge 5$ orders = $85$; $\ge 2$ orders = $70$; $1$ order = $55$.
+- **$S_{recency}$ (20% Weight)**: Time decay factor. $\le 15$ min = $95$; $\le 60$ min = $82$; $\le 6$ hours = $65$; $>6$ hours = $50$.
+- **$S_{amount}$ (15% Weight)**: Value elasticity factor. $\ge \text{₹50,000}$ = $95$; $\ge \text{₹10,000}$ = $88$; $\ge \text{₹2,000}$ = $78$; $< \text{₹2,000}$ = $65$.
+
+### 3.1 Estimated Recoverable Revenue Formula
+
+$$\text{Estimated Recoverable INR} = \text{amountInr} \times \left( \frac{P_{recovery}}{100} \right)$$
+
+### 3.2 Strategy Assignment Logic
+
+| Conditions | Assigned Strategy | Action Rationale |
+| :--- | :--- | :--- |
+| Active Issuer Outage (Smart Silence) | `SMART_SILENCE` | Suppress outreach during active bank CBS outage. |
+| Amount $\ge \text{₹50,000}$ | `CONCIERGE_OUTREACH` | High-value transaction requires VIP phone concierge outreach. |
+| Category = `CUSTOMER_AUTHENTICATION` | `IMMEDIATE_PAYMENT_LINK` | Send instant 15-min 1-click payment link via SMS/WhatsApp. |
+| Category = `CHECKOUT_ABANDONMENT` | `WHATSAPP_NUDGE` | Send conversational WhatsApp nudge with cart details. |
+| Category = `MANDATE_SUBSCRIPTION_ERROR` | `SMART_RETRY` | Schedule background server-side retry off-peak. |
+| Category = `INSUFFICIENT_FUNDS` / `LIMIT` | `EMAIL_RECOVERY` | Send email inviting switch to UPI / Netbanking. |
 
 ---
 

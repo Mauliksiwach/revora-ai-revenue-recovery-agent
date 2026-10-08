@@ -10,6 +10,7 @@ import { TransactionFilters } from "./components/transactions/TransactionFilters
 import { TransactionTable } from "./components/transactions/TransactionTable.js";
 import { TransactionDetailDrawer } from "./components/transactions/TransactionDetailDrawer.js";
 import { DetectiveDashboard } from "./components/intelligence/DetectiveDashboard.js";
+import { OpportunitiesDashboard } from "./components/opportunities/OpportunitiesDashboard.js";
 import {
   StatCardSkeleton,
   ChartSkeleton,
@@ -154,6 +155,8 @@ export function App() {
         <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
           {activeTab === "revenue_detective" ? (
             <DetectiveDashboard />
+          ) : activeTab === "recovery_opportunities" ? (
+            <OpportunitiesDashboard />
           ) : (
             <>
               {/* Page Heading */}

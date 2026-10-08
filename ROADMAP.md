@@ -26,11 +26,13 @@ This document outlines the 7-phase build plan for **Revora — AI Revenue Recove
 
 ---
 
-### ⏳ Phase 3: Customer Intent & Recovery Score
-- Recovery Probability Engine ($P_{recovery}$) using weighted historical and transactional signals.
-- Opportunity categorization: High, Medium, and Low priority recovery opportunities.
-- Estimated recoverable revenue computations per opportunity.
-- Recovery Opportunities dashboard view.
+### ✅ Phase 3: Customer Intent & Recovery Score Engine (COMPLETED)
+- Recovery Probability Engine ($P_{recovery}$) using weighted historical ($S_{history}$), failure code ($S_{category}$), recency ($S_{recency}$), and elasticity ($S_{amount}$) signals.
+- Opportunity priority classification (High $\ge 75\%$, Medium $50\%-74\%$, Low $<50\%$).
+- Estimated recoverable revenue calculation per opportunity.
+- Action Strategy Assignment Engine (`IMMEDIATE_PAYMENT_LINK`, `WHATSAPP_NUDGE`, `EMAIL_RECOVERY`, `SMART_RETRY`, `CONCIERGE_OUTREACH`, `SMART_SILENCE`).
+- Interactive `OpportunitiesDashboard` & `OpportunityCard` with priority tabs, search, and factor score breakdowns.
+- 8 automated Vitest tests (28/28 total backend tests passing).
 
 ---
 

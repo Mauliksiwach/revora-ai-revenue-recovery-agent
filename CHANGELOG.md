@@ -69,3 +69,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Automated Testing Suite**:
   - 11 new Vitest unit and integration tests (`revenueDetective.test.ts`) validating anomaly detection, HDFC spike detection, severity classification, confidence scoring, evidence generation, and API contract compliance.
   - Total backend test suite expanded to 20/20 passing tests.
+
+---
+
+## [Phase 3: Customer Intent & Recovery Score Engine] - 2026-08-29
+
+### Added
+- **Recovery Probability Scoring Engine (`RecoveryScoringService`)**:
+  - Implementation of dynamic recovery probability algorithm ($P_{recovery}$) combining four weighted sub-scores:
+    - **Category Recoverability ($S_{category}$, 35% weight)**: Baseline recoverability mapped across 8 failure categories (e.g. OTP drop = 90, Checkout abandonment = 82, Insufficient funds = 25).
+    - **Customer History & LTV ($S_{history}$, 30% weight)**: Historical order volume and lifetime value tiering.
+    - **Recency Decay ($S_{recency}$, 20% weight)**: Time-decay curve prioritizing fresh failures (<15 min).
+    - **Amount Elasticity ($S_{amount}$, 15% weight)**: Value-proportional recovery elasticity.
+  - Priority classification into `HIGH` ($\ge 75\%$), `MEDIUM` ($50\%-74\%$), and `LOW` ($<50\%$).
+  - Estimated recoverable INR computation per opportunity ($P_{recovery} \times \text{amountInr}$).
+- **Action Strategy Assignment Engine**:
+  - Rule-driven mapping assigning optimal candidate strategies (`IMMEDIATE_PAYMENT_LINK`, `WHATSAPP_NUDGE`, `EMAIL_RECOVERY`, `SMART_RETRY`, `CONCIERGE_OUTREACH`, `SMART_SILENCE`).
+  - Integration with Phase 2 Smart Silence triggers to suppress outreach for degraded issuer switches.
+- **REST API Endpoints**:
+  - `GET /api/v1/opportunities`: Returns scored recovery opportunity feed, total estimated recoverable INR, priority counts, average score, and optional priority/search filtering.
+  - `GET /api/v1/opportunities/:id`: Fetches detailed opportunity metadata and score factor weights.
+- **Recovery Opportunities Dashboard UI (`OpportunitiesDashboard` & `OpportunityCard`)**:
+  - Interactive workspace dashboard with KPI cards for Estimated Recoverable Revenue, Total Opportunities, Avg Recovery Score, and High Priority counts.
+  - Priority filter tab controls (`ALL`, `HIGH`, `MEDIUM`, `LOW`) and real-time search filtering.
+  - Expandable opportunity cards featuring score badges, priority tags, strategy pills, estimated recoverable values, customer LTV indicators, and detailed factor score breakdowns.
+- **Automated Testing Suite**:
+  - 8 new Vitest unit and integration tests (`recoveryScoring.test.ts`) testing score bounds, factor weight calculations, strategy assignment, priority filtering, and API contracts.
+  - Total backend test suite expanded to **28/28 passing tests**.
