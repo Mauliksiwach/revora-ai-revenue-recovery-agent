@@ -95,7 +95,26 @@ Revora Autonomous Agent evaluates every candidate action against 4 deterministic
 
 ---
 
-## 5. Explainability & Evidence
+---
+
+## 5. Smart Silence & Switch Health Architecture (Phase 5 Implemented)
+
+Smart Silence evaluates bank switch failure rates across rolling 30-minute windows:
+
+| Switch Health Status | Failure Rate Threshold | System Behavior |
+| :--- | :--- | :--- |
+| **`HEALTHY`** | $< 35.0\%$ | Normal automated recovery pipeline active. |
+| **`DEGRADED`** | $35.0\% - 54.9\%$ | Smart Silence activated; customer outreach suppressed for affected bank. |
+| **`OUTAGE`** | $\ge 55.0\%$ | Smart Silence activated; urgent incident logged and outreach suppressed. |
+
+### 5.1 Automated Resumption & Manual Override
+
+- **Auto-Resumption**: Outreach pipelines automatically resume when bank failure rates drop below $35.0\%$.
+- **Manual Merchant Override**: Merchants can manually toggle `Resume Outreach` or `Force Suppress` for individual bank switches via the `POST /api/v1/smartsilence/override` API or UI card controls.
+
+---
+
+## 6. Explainability & Evidence
 
 Every AI decision in Revora MUST include:
 1. **Confidence Score** (e.g. `91% confidence`).

@@ -122,3 +122,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Automated Testing Suite**:
   - 8 new Vitest unit and integration tests (`revoraAgent.test.ts`) verifying policy gate enforcement, high-ticket human approval routing, decision approval/rejection workflows, and API endpoints.
   - Total backend test suite expanded to **36/36 passing tests**.
+
+---
+
+## [Phase 5: Smart Silence & Incident Cooldown Management] - 2026-08-29
+
+### Added
+- **Smart Silence Engine & Switch Health Service (`SmartSilenceService`)**:
+  - Real-time bank switch health monitor evaluating failure rates across 8 major Indian bank issuers (HDFC, ICICI, SBI, AXIS, KOTAK, YES_BANK, PNB, BOB).
+  - Categorization into `HEALTHY` ($<35\%$), `DEGRADED` ($35\%-54\%$), and `OUTAGE` ($\ge 55\%$).
+  - Automatic activation of Smart Silence "Do Nothing" outreach suppression whenever switch degradation or outage is detected.
+  - Calculation of shielded customer volume and total revenue protected from failure spam.
+  - Automated resumption when switch failure rates fall below baseline.
+  - Manual merchant override support for forcing suppression activation or pause per bank switch.
+- **REST API Endpoints**:
+  - `GET /api/v1/smartsilence/status`: Returns current global Smart Silence state, active degraded switch count, total shielded revenue/txs, and switch health list.
+  - `GET /api/v1/smartsilence/history`: Returns historical log of Smart Silence events and resumption timestamps.
+  - `POST /api/v1/smartsilence/override`: Allows merchants to toggle manual overrides for specific bank switches.
+- **Smart Silence Dashboard UI (`SmartSilenceDashboard` & `SwitchHealthCard`)**:
+  - Interactive workspace control dashboard with KPI summary bar for Outreach Suppression State, Degraded Bank Switches, Shielded Revenue, and Shielded Customers.
+  - Indian Bank Switch Health Grid displaying real-time failure rates vs baseline and 1-click manual override controls (`Resume Outreach` / `Force Suppress`).
+  - Automated Incident Event Timeline log showing historical suppression activation and manual override events.
+- **Automated Testing Suite**:
+  - 7 new Vitest unit and integration tests (`smartSilence.test.ts`) validating switch health calculation, override toggling, event logging, and API endpoints.
+  - Total backend test suite expanded to **43/43 passing tests**.

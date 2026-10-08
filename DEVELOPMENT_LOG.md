@@ -267,4 +267,53 @@ This document maintains a continuous, detailed technical record of every develop
 - `feat(phase-4): add revora autonomous agent engine`
 
 ### Next phase:
-- **Phase 5: Smart Silence & Incident Cooldown** (Dedicated Smart Silence management view, bank switch health monitoring, early warning alerts, and automated pipeline pause/resumption).
+- **Phase 5: Smart Silence & Incident Cooldown** (Completed)
+
+---
+
+## PHASE 5 — SMART SILENCE & INCIDENT COOLDOWN MANAGEMENT
+
+**Date:** 2026-08-29  
+**Objective:** Build the Smart Silence Engine (`SmartSilenceService`), bank switch health monitoring system, manual merchant override controls, incident event audit log, and the interactive Smart Silence Dashboard UI.
+
+### Features implemented:
+1. **Smart Silence & Switch Health Engine (`SmartSilenceService`)**:
+   - Real-time bank switch health monitor evaluating rolling 30-minute transaction failure rates across 8 major Indian bank issuers (HDFC, ICICI, SBI, AXIS, KOTAK, YES_BANK, PNB, BOB).
+   - Switch status classification: `HEALTHY` ($<35\%$), `DEGRADED` ($35\%-54\%$), and `OUTAGE` ($\ge 55\%$).
+   - Automatic activation of Smart Silence "Do Nothing" outreach suppression when switch degradation or outage is detected.
+   - Shields buyers from redundant outreach spam during active infrastructure downtime.
+   - Calculates total shielded transactions and total shielded revenue in INR.
+   - Manual merchant override controls for overriding suppression state on specific bank switches.
+2. **REST API Endpoints**:
+   - `GET /api/v1/smartsilence/status`: Returns current global Smart Silence state, active degraded switch count, total shielded metrics, and switch health list.
+   - `GET /api/v1/smartsilence/history`: Returns historical log of Smart Silence events and resumption timestamps.
+   - `POST /api/v1/smartsilence/override`: Toggles manual merchant overrides for specific bank switches.
+3. **Smart Silence Dashboard UI (`SmartSilenceDashboard` & `SwitchHealthCard`)**:
+   - Interactive control dashboard featuring summary KPI cards (Outreach Suppression State, Degraded Bank Switches, Shielded Revenue, Shielded Customers).
+   - Indian Bank Switch Health Grid displaying real-time failure rates vs baseline and 1-click manual override controls (`Resume Outreach` / `Force Suppress`).
+   - Automated Incident Event Timeline log showing historical suppression activation and manual override events.
+
+### Backend changes:
+- Created `backend/src/types/smartsilence.ts`.
+- Created `backend/src/services/smartSilenceService.ts`.
+- Created `backend/src/controllers/smartSilenceController.ts`.
+- Updated `backend/src/routes/api.ts` mounting `/smartsilence/status`, `/smartsilence/history`, `/smartsilence/override`.
+- Created `backend/tests/smartSilence.test.ts` with 7 automated Vitest tests.
+
+### Frontend changes:
+- Created `frontend/src/types/smartsilence.ts`.
+- Updated `frontend/src/services/api.ts` with Smart Silence API functions.
+- Created `frontend/src/components/smartsilence/SwitchHealthCard.tsx`.
+- Created `frontend/src/components/smartsilence/SmartSilenceDashboard.tsx`.
+- Updated `frontend/src/components/layout/Sidebar.tsx` enabling Phase 5 navigation (`ready: true`).
+- Updated `frontend/src/App.tsx` handling `activeTab === "smart_silence"`.
+
+### Verification & Testing:
+- Ran backend test suite: **43/43 passing tests** (including 7 new Smart Silence tests).
+- Ran frontend Vite build: zero errors, 2231 modules compiled cleanly in 5.86s.
+
+### Git commit:
+- `feat(phase-5): add smart silence and incident cooldown management`
+
+### Next phase:
+- **Phase 6: Recovery Lab** (Multi-strategy recovery simulator comparing Immediate Retry vs Delayed Retry vs Email vs WhatsApp vs Payment Link vs AI Adaptive, ROI analytics, and interactive scenario sandbox).

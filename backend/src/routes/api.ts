@@ -4,6 +4,7 @@ import { AnalyticsController } from "../controllers/analyticsController.js";
 import { IncidentController } from "../controllers/incidentController.js";
 import { OpportunityController } from "../controllers/opportunityController.js";
 import { AgentController } from "../controllers/agentController.js";
+import { SmartSilenceController } from "../controllers/smartSilenceController.js";
 
 export const apiRouter = Router();
 
@@ -35,3 +36,8 @@ apiRouter.get("/agent/decisions", AgentController.getDecisions);
 apiRouter.post("/agent/run", AgentController.runAgentCycle);
 apiRouter.post("/agent/approve/:id", AgentController.approveDecision);
 apiRouter.post("/agent/reject/:id", AgentController.rejectDecision);
+
+// Phase 5: Smart Silence & Incident Cooldown Management
+apiRouter.get("/smartsilence/status", SmartSilenceController.getStatusSummary);
+apiRouter.get("/smartsilence/history", SmartSilenceController.getEventHistory);
+apiRouter.post("/smartsilence/override", SmartSilenceController.toggleOverride);

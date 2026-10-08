@@ -8,6 +8,7 @@ import type {
 import type { DetectionResult } from "../types/incident";
 import type { OpportunitySummary, OpportunityPriority } from "../types/opportunity";
 import type { AgentCycleSummary, AgentPolicyStatus, DecisionExecutionState, AgentDecision } from "../types/agent";
+import type { SmartSilenceStatusSummary, BankSwitchHealth } from "../types/smartsilence";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -142,6 +143,28 @@ export async function approveAgentDecision(id: string): Promise<AgentDecision> {
 export async function rejectAgentDecision(id: string): Promise<AgentDecision> {
   const res = await fetch(`${API_BASE}/agent/reject/${id}`, { method: "POST" });
   if (!res.ok) throw new Error(`Failed to reject decision ${id}`);
+  const json = await res.json();
+  return json.data;
+}
+
+// Phase 5: Smart Silence & Incident Cooldown
+export async function fetchSmartSilenceStatus(): Promise<SmartSilenceStatusSummary> {
+  const res = await fetch(`${API_BASE}/smartsilence/status`);
+  if (!res.ok) throw new Error("Failed to fetch Smart Silence status");
+  const json = await res.json();
+  return json.data;
+}
+
+export async function toggleSmartSilenceOverride(
+  bank: string,
+  forceSuppressed?: boolean
+): Promise<BankSwitchHealth> {
+  const res = await fetch(`${API_BASE}/smartsilence/override`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bank, forceSuppressed }),
+  });
+  if (!res.ok) throw new Error(`Failed to toggle Smart Silence override for ${bank}`);
   const json = await res.json();
   return json.data;
 }

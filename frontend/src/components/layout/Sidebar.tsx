@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "Smart Silence",
       icon: VolumeX,
       phase: "Phase 5",
-      ready: false,
+      ready: true,
     },
     {
       id: "recovery_lab",
