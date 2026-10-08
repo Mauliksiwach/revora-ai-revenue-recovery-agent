@@ -41,3 +41,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Production TypeScript build passing with zero errors.
 - **Project Documentation**:
   - Full suite of 11 required project documentation files.
+
+---
+
+## [Phase 2: Revora Intelligence & AI Revenue Detective] - 2026-08-29
+
+### Added
+- **AI Pattern Analysis Engine (`RevenueDetectiveService`)**:
+  - Implementation of three real-time rule and evidence-based detection algorithms analyzing rolling transaction sliding windows.
+  - **Issuer Bank Outage / Degradation Detection**: Scans banking institutions (HDFC, ICICI, SBI, AXIS, etc.) for elevated failure rates exceeding 35% threshold.
+  - **UPI Switch Throttle Detection**: Identifies NPCI PSP routing congestion or issuer core banking system (CBS) timeout spikes on UPI payment rails.
+  - **Authentication Failure Spike Detection**: Detects abnormal customer-side OTP/MPIN validation drops exceeding 2.5x normal baseline rate.
+  - **Multi-Rail Gateway Failure Detection**: Identifies simultaneous degradation across multiple payment rails indicating upstream gateway infrastructure outages.
+- **Incident Data Model & REST API**:
+  - `RevenueIncident` data structure tracking severity (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), diagnosis type, affected issuer/rail, revenue at risk, failure rates, AI reasoning, confidence score, evidence array, and recovery recommendations.
+  - `GET /api/v1/intelligence/detect` endpoint executing live AI pattern detection and returning structured incident reports.
+  - `GET /api/v1/intelligence/incidents/:id` endpoint for retrieving detailed incident metadata.
+- **Smart Silence Signature Feature**:
+  - Automated suppression recommendation when infrastructure outages (issuer CBS drops or multi-rail gateway failures) are detected.
+  - Prevents spamming or annoying customers during ongoing bank/gateway technical outages.
+- **AI Revenue Detective Dashboard UI (`DetectiveDashboard` & `IncidentCard`)**:
+  - Interactive incident command interface integrated into Revora workspace navigation.
+  - Real-time incident severity badges, confidence score metrics, and revenue at risk calculations.
+  - Expandable incident cards showing full AI diagnosis, structured evidence lists, and actionable recovery advice.
+  - Global Smart Silence indicator banner showing active customer outreach suppression state.
+  - Re-run detection button with multi-stage progress indication.
+- **Automated Testing Suite**:
+  - 11 new Vitest unit and integration tests (`revenueDetective.test.ts`) validating anomaly detection, HDFC spike detection, severity classification, confidence scoring, evidence generation, and API contract compliance.
+  - Total backend test suite expanded to 20/20 passing tests.

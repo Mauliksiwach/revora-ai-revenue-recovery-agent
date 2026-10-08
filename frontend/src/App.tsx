@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Navbar } from "./components/layout/Navbar.js";
 import { Sidebar } from "./components/layout/Sidebar.js";
 import { SimulationBanner } from "./components/layout/SimulationBanner.js";
@@ -9,6 +9,7 @@ import { IncidentAlert } from "./components/dashboard/IncidentAlert.js";
 import { TransactionFilters } from "./components/transactions/TransactionFilters.js";
 import { TransactionTable } from "./components/transactions/TransactionTable.js";
 import { TransactionDetailDrawer } from "./components/transactions/TransactionDetailDrawer.js";
+import { DetectiveDashboard } from "./components/intelligence/DetectiveDashboard.js";
 import {
   StatCardSkeleton,
   ChartSkeleton,
@@ -151,109 +152,115 @@ export function App() {
 
         {/* Workspace Canvas */}
         <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
-          {/* Page Heading */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
-                  Revenue Command Center
-                </h1>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase font-mono">
-                  Live Monitoring
-                </span>
-              </div>
-              <p className="text-xs text-gray-400 mt-1">
-                Real-time visibility into payment failure rates, revenue at risk, and failure root causes.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                onClick={loadData}
-                disabled={loading}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 text-xs font-medium transition cursor-pointer"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 text-gray-400 ${loading ? "animate-spin" : ""}`} />
-                <span>Refresh Feed</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Error Banner */}
-          {error && (
-            <div className="bg-rose-950/40 border border-rose-800/60 rounded-xl p-4 mb-6 text-xs flex items-center justify-between">
-              <div className="flex items-center gap-2 text-rose-300">
-                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                <span>
-                  <strong>Revora backend offline or unreachable.</strong> Ensure backend server is running on port 5000 (`npm run dev:backend`).
-                </span>
-              </div>
-              <button
-                onClick={loadData}
-                className="px-3 py-1 bg-rose-900 hover:bg-rose-800 text-white rounded font-medium cursor-pointer"
-              >
-                Retry
-              </button>
-            </div>
-          )}
-
-          {/* Incident Alert if issuer degradation detected */}
-          {breakdowns && <IncidentAlert issuers={breakdowns.issuers} />}
-
-          {/* Metric KPI Cards */}
-          {loading && !metrics ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              {[...Array(4)].map((_, i) => (
-                <StatCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : metrics ? (
-            <MetricsOverviewCards metrics={metrics} />
-          ) : null}
-
-          {/* Visual Trend Chart */}
-          {loading && trends.length === 0 ? (
-            <ChartSkeleton />
+          {activeTab === "revenue_detective" ? (
+            <DetectiveDashboard />
           ) : (
-            <TrendChart trends={trends} />
-          )}
+            <>
+              {/* Page Heading */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <h1 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
+                      Revenue Command Center
+                    </h1>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase font-mono">
+                      Live Monitoring
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Real-time visibility into payment failure rates, revenue at risk, and failure root causes.
+                  </p>
+                </div>
 
-          {/* Breakdowns Row (Methods, Issuers, Categories) */}
-          {breakdowns && <BreakdownCharts breakdowns={breakdowns} />}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={loadData}
+                    disabled={loading}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 text-xs font-medium transition cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 text-gray-400 ${loading ? "animate-spin" : ""}`} />
+                    <span>Refresh Feed</span>
+                  </button>
+                </div>
+              </div>
 
-          {/* Transaction Explorer Header */}
-          <div className="pt-2 pb-3">
-            <h2 className="text-base font-bold text-white tracking-wide">
-              Transaction Explorer & Failure Inspector
-            </h2>
-            <p className="text-xs text-gray-400 mt-0.5">
-              Filter, search, and deep-dive into individual failed payment lifecycles and gateway error codes.
-            </p>
-          </div>
+              {/* Error Banner */}
+              {error && (
+                <div className="bg-rose-950/40 border border-rose-800/60 rounded-xl p-4 mb-6 text-xs flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-rose-300">
+                    <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                    <span>
+                      <strong>Revora backend offline or unreachable.</strong> Ensure backend server is running on port 5000 (`npm run dev:backend`).
+                    </span>
+                  </div>
+                  <button
+                    onClick={loadData}
+                    className="px-3 py-1 bg-rose-900 hover:bg-rose-800 text-white rounded font-medium cursor-pointer"
+                  >
+                    Retry
+                  </button>
+                </div>
+              )}
 
-          {/* Filters Bar */}
-          <TransactionFilters
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onReset={handleResetFilters}
-          />
+              {/* Incident Alert if issuer degradation detected */}
+              {breakdowns && <IncidentAlert issuers={breakdowns.issuers} />}
 
-          {/* Transaction Table */}
-          {loading && transactions.length === 0 ? (
-            <TableSkeleton />
-          ) : (
-            <TransactionTable
-              transactions={transactions}
-              total={totalTransactions}
-              page={filters.page}
-              limit={filters.limit}
-              totalPages={totalPages}
-              onPageChange={(p) => handleFilterChange({ page: p })}
-              onSelectTransaction={(tx) => setSelectedTransaction(tx)}
-              sortBy={filters.sortBy}
-              sortOrder={filters.sortOrder}
-              onSortChange={handleSortChange}
-            />
+              {/* Metric KPI Cards */}
+              {loading && !metrics ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  {[...Array(4)].map((_, i) => (
+                    <StatCardSkeleton key={i} />
+                  ))}
+                </div>
+              ) : metrics ? (
+                <MetricsOverviewCards metrics={metrics} />
+              ) : null}
+
+              {/* Visual Trend Chart */}
+              {loading && trends.length === 0 ? (
+                <ChartSkeleton />
+              ) : (
+                <TrendChart trends={trends} />
+              )}
+
+              {/* Breakdowns Row (Methods, Issuers, Categories) */}
+              {breakdowns && <BreakdownCharts breakdowns={breakdowns} />}
+
+              {/* Transaction Explorer Header */}
+              <div className="pt-2 pb-3">
+                <h2 className="text-base font-bold text-white tracking-wide">
+                  Transaction Explorer &amp; Failure Inspector
+                </h2>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Filter, search, and deep-dive into individual failed payment lifecycles and gateway error codes.
+                </p>
+              </div>
+
+              {/* Filters Bar */}
+              <TransactionFilters
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onReset={handleResetFilters}
+              />
+
+              {/* Transaction Table */}
+              {loading && transactions.length === 0 ? (
+                <TableSkeleton />
+              ) : (
+                <TransactionTable
+                  transactions={transactions}
+                  total={totalTransactions}
+                  page={filters.page}
+                  limit={filters.limit}
+                  totalPages={totalPages}
+                  onPageChange={(p) => handleFilterChange({ page: p })}
+                  onSelectTransaction={(tx) => setSelectedTransaction(tx)}
+                  sortBy={filters.sortBy}
+                  sortOrder={filters.sortOrder}
+                  onSortChange={handleSortChange}
+                />
+              )}
+            </>
           )}
         </main>
       </div>

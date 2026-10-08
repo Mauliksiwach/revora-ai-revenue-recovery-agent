@@ -24,3 +24,4 @@ Thumbs.db
 # Vitest / Coverage
 coverage/
 .vitest/
+*.tsbuildinfo

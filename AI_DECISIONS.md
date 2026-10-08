@@ -17,16 +17,27 @@ Every decision follows a deterministic 5-part structure:
 
 ---
 
-## 2. Failure Diagnosis & Incident Taxonomy (Phase 2 Scaffolding)
+---
 
-Revora categorizes payment failures into four macro-domains:
+## 2. Failure Diagnosis & Incident Taxonomy (Phase 2 Implemented)
 
-| Domain | Primary Causes | AI Diagnosis Rule | Typical Action |
+Revora Intelligence analyzes rolling 30-minute transaction windows to detect and diagnose four macro-domains of revenue loss:
+
+| Domain / Diagnosis Type | Primary Causes | AI Diagnosis Rule & Thresholds | Implemented Action / Recommendation |
 | :--- | :--- | :--- | :--- |
-| **Infrastructure / Issuer** | CBS Timeout, NPCI Throttle, 503 Gateway Down | High concentration of failures on a single bank within a short rolling window (>35% failure rate). | **`SMART_SILENCE`** / `WAIT` |
-| **Customer Auth** | Incorrect OTP, Incorrect MPIN, 3DS Challenge Fail | Customer attempted transaction but failed 2FA step; high intent indicated by multiple recent orders. | **`SEND_PAYMENT_LINK`** / `SEND_WHATSAPP` |
-| **Friction / Abandonment** | Drop-off on checkout screen, payment selector timeout | User did not initiate OTP; abandoned cart on step 2/3. | **`SEND_EMAIL`** with cart recovery |
-| **Account / Card Limits** | Insufficient funds, international txn disabled | Card declined by issuer due to customer account status. | **`SUGGEST_ALTERNATE_PAYMENT_METHOD`** (e.g. UPI / Netbanking) |
+| **`ISSUER_OUTAGE`** / **`UPI_SWITCH_THROTTLE`** | Bank CBS Timeout, NPCI Throttle, 503 Gateway Down | Single bank issuer failure rate $>35\%$ (baseline 12%) in 30-min window with $>8$ transactions. High UPI concentration ($>60\%$) triggers `UPI_SWITCH_THROTTLE`. | **`SMART_SILENCE`** (Suppress customer outreach, monitor switch health) |
+| **`AUTHENTICATION_SPIKE`** | Incorrect OTP, Incorrect MPIN, 3DS Challenge Fail | Customer auth failure rate $>2.5\times$ baseline ($>10\%$) in 30-min window with $>5$ failures. | **`SEND_PAYMENT_LINK`** (Send 15-min secure payment link via SMS/WhatsApp) |
+| **`MULTI_RAIL_FAILURE`** | Gateway Outage, Acquirer Network Drop | $\ge 2$ payment rails (UPI, Cards, Netbanking) simultaneously experiencing failure rate $>35\%$. | **`ESCALATE_TO_HUMAN`** & **`SMART_SILENCE`** (Pause automated recovery, alert merchant team) |
+| **`CHECKOUT_ABANDONMENT_SURGE`** | Cart Drop-off, Payment Selector Timeout | Checkout abandonment rate $>2.0\times$ normal baseline. | **`SEND_EMAIL`** (Branded cart recovery with alternate payment rails) |
+
+---
+
+### 2.1 Smart Silence Signature Feature
+
+When Revora Intelligence detects an **`ISSUER_OUTAGE`** or **`MULTI_RAIL_FAILURE`**, it automatically activates **Smart Silence**:
+- **Why**: Contacting customers during a bank or gateway outage irritates buyers and results in repeat failed attempts, damaging conversion trust.
+- **Mechanism**: Suppresses all automated customer recovery outreach (SMS, WhatsApp, email) for the affected bank/rail until switch failure rates drop below baseline.
+- **Value**: Protects brand reputation and prevents redundant recovery attempts during infrastructure downtime.
 
 ---
 

@@ -1,6 +1,7 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { TransactionController } from "../controllers/transactionController.js";
 import { AnalyticsController } from "../controllers/analyticsController.js";
+import { IncidentController } from "../controllers/incidentController.js";
 
 export const apiRouter = Router();
 
@@ -18,3 +19,7 @@ apiRouter.get("/transactions/:id", TransactionController.getTransactionById);
 
 // Simulation Management
 apiRouter.post("/simulation/regenerate", TransactionController.regenerateSimulation);
+
+// Phase 2: Revora Intelligence / AI Revenue Detective
+apiRouter.get("/intelligence/detect", IncidentController.runDetection);
+apiRouter.get("/intelligence/incidents/:id", IncidentController.getIncidentById);

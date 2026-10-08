@@ -1,10 +1,11 @@
-﻿import type {
+import type {
   MetricsOverview,
   TrendPoint,
   BreakdownsData,
   Transaction,
   TransactionFilterState,
-} from "../types/index.js";
+} from "../types/index";
+import type { DetectionResult } from "../types/incident";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -78,4 +79,12 @@ export async function regenerateSimulationData(count = 1200): Promise<void> {
     body: JSON.stringify({ count }),
   });
   if (!res.ok) throw new Error("Failed to regenerate simulation dataset");
+}
+
+// Phase 2: Revora Intelligence / AI Revenue Detective
+export async function fetchDetectionResults(): Promise<DetectionResult> {
+  const res = await fetch(`${API_BASE}/intelligence/detect`);
+  if (!res.ok) throw new Error("Failed to run Revora Intelligence detection");
+  const json = await res.json();
+  return json.data;
 }

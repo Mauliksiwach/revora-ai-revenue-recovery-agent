@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import {
   LayoutDashboard,
   Search,
@@ -31,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "AI Revenue Detective",
       icon: Search,
       phase: "Phase 2",
-      ready: false,
+      ready: true,
     },
     {
       id: "recovery_opportunities",

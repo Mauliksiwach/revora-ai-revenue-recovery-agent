@@ -1,4 +1,4 @@
-﻿import {
+import {
   Transaction,
   Customer,
   PaymentStatus,
@@ -106,9 +106,10 @@ export function generateSyntheticTransactions(
   const now = Date.now();
   const timeSpanHours = 48; // span over last 48 hours
 
-  // Define an anomaly spike time window in the last 2 hours
-  const spikeStart = now - (90 * 60 * 1000); // 90 mins ago
-  const spikeEnd = now - (60 * 60 * 1000);   // 60 mins ago
+  // Define an anomaly spike time window within the last 25 minutes
+  // so it falls inside the 30-minute rolling detection window used by Revora Intelligence
+  const spikeStart = now - (25 * 60 * 1000); // 25 mins ago
+  const spikeEnd = now - (5 * 60 * 1000);    // 5 mins ago
 
   for (let i = 1; i <= count; i++) {
     const cust = randomChoice(custList);

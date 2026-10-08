@@ -107,4 +107,58 @@ This document maintains a continuous, detailed technical record of every develop
 - Initialized local Git repository on `main` branch. Awaiting remote repository setup / `gh auth login`.
 
 ### Next phase:
-- **Phase 2: AI Revenue Detective** (Failure pattern detection, issuer degradation isolation, root cause reasoning with evidence, and Incident System).
+- **Phase 2: AI Revenue Detective** (Completed)
+
+---
+
+## PHASE 2 — AI REVENUE DETECTIVE (REVORA INTELLIGENCE)
+
+**Date:** 2026-08-29  
+**Objective:** Build the Revora Intelligence pattern analysis engine to automatically detect revenue loss incidents, diagnose issuer degradation, identify root causes, calculate confidence scores, compile supporting evidence, and recommend safe recovery actions (including Smart Silence).
+
+### Features implemented:
+1. **Revora Intelligence Pattern Analysis Engine (`RevenueDetectiveService`)**:
+   - Built a sliding window pattern analysis service analyzing raw transaction streams.
+   - **Issuer Bank CBS Outage Detection**: Identifies bank issuers (HDFC, ICICI, SBI, etc.) whose failure rate exceeds 35% within the active 30-minute detection window.
+   - **UPI Switch Throttle Detection**: Diagnoses NPCI PSP routing congestion or issuer core banking system (CBS) timeout spikes specifically on UPI payment rails.
+   - **Authentication Failure Spike Detection**: Detects customer-side OTP/MPIN validation failure spikes exceeding 2.5x the normal baseline rate (4.0%).
+   - **Multi-Rail Gateway Failure Detection**: Detects simultaneous failure spikes across 2 or more payment rails, signaling upstream gateway infrastructure outages.
+2. **Smart Silence Signature Feature**:
+   - Recommends automatic customer outreach suppression whenever systemic infrastructure outages (issuer CBS timeout or multi-rail gateway failures) are detected.
+   - Prevents sending useless payment links to customers during active bank technical outages.
+3. **Incident Data Model & REST Endpoints**:
+   - `RevenueIncident` data model tracking incident ID, title, severity (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), status, diagnosis type, affected issuer/rail, affected transaction count, revenue at risk, failure rates, AI diagnosis narrative, confidence percentage, evidence array, and recovery recommendation.
+   - `GET /api/v1/intelligence/detect`: Executes live Revora Intelligence detection and returns structured incident reports.
+   - `GET /api/v1/intelligence/incidents/:id`: Fetches detailed metadata for a specific incident.
+4. **AI Revenue Detective Dashboard (`DetectiveDashboard` & `IncidentCard`)**:
+   - Built interactive incident command dashboard accessible via the Revora workspace navigation sidebar.
+   - Summary stat cards displaying Total Incidents, Revenue at Risk, Smart Silence status, and AI Engine status.
+   - Smart Silence banner alerting merchants when outreach suppression is active.
+   - Expandable `IncidentCard` displaying severity badges, confidence score, diagnosis narrative, structured evidence list with metric significance tags (`STRONG`, `MODERATE`), and actionable recovery recommendations.
+   - Re-run detection button with simulated multi-stage reasoning progress feedback.
+
+### Backend changes:
+- Created `backend/src/types/incident.ts` defining incident severity, status, diagnosis type, evidence, and result types.
+- Created `backend/src/services/revenueDetectiveService.ts` implementing pattern recognition rules, evidence compilation, confidence calculation, and incident generation.
+- Created `backend/src/controllers/incidentController.ts` exposing detection API endpoints.
+- Updated `backend/src/routes/api.ts` mounting `/intelligence/detect` and `/intelligence/incidents/:id`.
+- Adjusted `backend/src/services/dataGenerator.ts` spike anomaly window to fall within the 30-minute sliding detection window.
+- Created `backend/tests/revenueDetective.test.ts` with 11 automated Vitest unit and integration tests.
+
+### Frontend changes:
+- Created `frontend/src/types/incident.ts` mirroring backend incident data types.
+- Updated `frontend/src/services/api.ts` adding `fetchDetectionResults()`.
+- Created `frontend/src/components/intelligence/IncidentCard.tsx` with expandable diagnosis, evidence table, and recommendation panels.
+- Created `frontend/src/components/intelligence/DetectiveDashboard.tsx` with summary bar, Smart Silence banner, and incident feed.
+- Updated `frontend/src/components/layout/Sidebar.tsx` marking Phase 2 as active/ready.
+- Updated `frontend/src/App.tsx` implementing workspace view tab-switching between Command Center and AI Revenue Detective.
+
+### Verification & Testing:
+- Ran backend test suite: 20/20 passing tests (including 11 new Revora Intelligence tests).
+- Ran frontend TypeScript compilation & production Vite build: zero errors, 2225 modules compiled successfully.
+
+### Git commit:
+- `feat(phase-2): add AI revenue detective`
+
+### Next phase:
+- **Phase 3: Recovery Opportunity Scoring & Strategy Engine** (Payment recovery probability scoring, customer sensitivity rules, strategy assignment, and Recovery Opportunities dashboard).
