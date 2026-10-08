@@ -45,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "Revora Agent",
       icon: Bot,
       phase: "Phase 4",
-      ready: false,
+      ready: true,
     },
     {
       id: "smart_silence",

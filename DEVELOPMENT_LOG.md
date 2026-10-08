@@ -218,4 +218,53 @@ This document maintains a continuous, detailed technical record of every develop
 - `feat(phase-3): add recovery opportunity scoring and strategy engine`
 
 ### Next phase:
-- **Phase 4: Revora Agent** (Autonomous bounded execution engine, policy gates, cooldown enforcement, human approval queue, and Revora Agent workspace view).
+- **Phase 4: Revora Agent** (Completed)
+
+---
+
+## PHASE 4 — REVORA AGENT (AUTONOMOUS BOUNDED EXECUTION ENGINE)
+
+**Date:** 2026-08-29  
+**Objective:** Build the Revora Autonomous Agent Engine (`RevoraAgentService`), deterministic Policy Safety Gate, Human Approval Queue for high-ticket transactions ($\ge \text{₹50,000}$), and the interactive Revora Agent Control Room UI.
+
+### Features implemented:
+1. **Revora Autonomous Agent Engine (`RevoraAgentService`)**:
+   - Built an autonomous decision loop that evaluates Phase 3 scored opportunities against 4 policy safety gates before executing bounded actions.
+   - **Communication Cooldown Gate**: Blocks outreach if customer was contacted within the past 24 hours (`BLOCKED_COOLDOWN`).
+   - **Max Contact Cap Gate**: Blocks outreach if total contact count reached maximum limit of 3 (`BLOCKED_MAX_CONTACT_CAP`).
+   - **High-Ticket Approval Gate**: Any transaction $\ge \text{₹50,000}$ is held in `PENDING_APPROVAL` for manual human authorization (`REQUIRES_HUMAN_APPROVAL`).
+   - **Smart Silence Outage Gate**: Suppresses outreach for bank issuers experiencing active CBS outage (`SUPPRESSED_SMART_SILENCE`).
+2. **Human Approval Workflow API**:
+   - `POST /api/v1/agent/approve/:id`: Grants human approval, changing execution state to `EXECUTED` and stamping execution time.
+   - `POST /api/v1/agent/reject/:id`: Rejects pending recovery decision.
+   - `POST /api/v1/agent/run`: Triggers fresh agent evaluation cycle across open opportunities.
+   - `GET /api/v1/agent/decisions`: Returns complete agent decision log, status counts, and revenue summary.
+3. **Revora Agent Control Room UI (`RevoraAgentDashboard` & `DecisionCard`)**:
+   - Interactive control room featuring summary KPI cards (Total Decisions, Executed Actions, Human Approval Queue count, Smart Silence Suppressions).
+   - Filter tabs (`ALL`, `HUMAN APPROVAL QUEUE`, `EXECUTED`, `SMART SILENCE`, `COOLDOWN`).
+   - Interactive `DecisionCard` displaying policy status badges, action pills, reasoning narratives, policy gate checklists, and 1-click Approve / Reject buttons for human approval queue items.
+
+### Backend changes:
+- Created `backend/src/types/agent.ts`.
+- Created `backend/src/services/revoraAgentService.ts`.
+- Created `backend/src/controllers/agentController.ts`.
+- Updated `backend/src/routes/api.ts` mounting `/agent/decisions`, `/agent/run`, `/agent/approve/:id`, `/agent/reject/:id`.
+- Created `backend/tests/revoraAgent.test.ts` with 8 automated Vitest tests.
+
+### Frontend changes:
+- Created `frontend/src/types/agent.ts`.
+- Updated `frontend/src/services/api.ts` with agent API functions.
+- Created `frontend/src/components/agent/DecisionCard.tsx`.
+- Created `frontend/src/components/agent/RevoraAgentDashboard.tsx`.
+- Updated `frontend/src/components/layout/Sidebar.tsx` enabling Phase 4 navigation (`ready: true`).
+- Updated `frontend/src/App.tsx` handling `activeTab === "revora_agent"`.
+
+### Verification & Testing:
+- Ran backend test suite: **36/36 passing tests** (including 8 new Revora Agent tests).
+- Ran frontend Vite build: zero errors, 2229 modules compiled cleanly in 6.03s.
+
+### Git commit:
+- `feat(phase-4): add revora autonomous agent engine`
+
+### Next phase:
+- **Phase 5: Smart Silence & Incident Cooldown** (Dedicated Smart Silence management view, bank switch health monitoring, early warning alerts, and automated pipeline pause/resumption).

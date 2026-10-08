@@ -96,3 +96,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Automated Testing Suite**:
   - 8 new Vitest unit and integration tests (`recoveryScoring.test.ts`) testing score bounds, factor weight calculations, strategy assignment, priority filtering, and API contracts.
   - Total backend test suite expanded to **28/28 passing tests**.
+
+---
+
+## [Phase 4: Revora Agent — Core AI Agent & Autonomous Bounded Execution] - 2026-08-29
+
+### Added
+- **Revora Autonomous Agent Engine (`RevoraAgentService`)**:
+  - Autonomous decision loop consuming Phase 3 scored opportunities and executing bounded recovery actions.
+  - Implemented 4-point deterministic Policy Safety Gate:
+    - **24-Hour Communication Cooldown**: Suppresses outreach if customer was contacted within the last 24 hours (`BLOCKED_COOLDOWN`).
+    - **Maximum Contact Cap**: Enforces a strict limit of 3 contact attempts per transaction (`BLOCKED_MAX_CONTACT_CAP`).
+    - **High-Ticket Human Approval Gate**: Transactions $\ge \text{₹50,000}$ are routed to `REQUIRES_HUMAN_APPROVAL` and held in `PENDING_APPROVAL` status until authorized.
+    - **Smart Silence Outage Gate**: Suppresses outreach for bank issuers experiencing active CBS outage (`SUPPRESSED_SMART_SILENCE`).
+- **Human Approval Workflow API**:
+  - `POST /api/v1/agent/approve/:id`: Grants human authorization for high-ticket recovery actions.
+  - `POST /api/v1/agent/reject/:id`: Rejects pending recovery actions.
+  - `POST /api/v1/agent/run`: Triggers on-demand agent decision cycle.
+  - `GET /api/v1/agent/decisions`: Returns complete agent decision feed and summary metrics.
+- **Revora Agent Control Room UI (`RevoraAgentDashboard` & `DecisionCard`)**:
+  - Dedicated workspace control room for monitoring autonomous agent operations.
+  - KPI summary cards tracking Total Decisions, Executed Actions, Human Approval Queue count, and Smart Silence Suppressions.
+  - Human Approval Queue tab with 1-click Approve / Reject action buttons.
+  - Expandable `DecisionCard` displaying execution state badges, policy gate checklists, reasoning narratives, and simulated action payload metadata (SMS/WhatsApp/Email channel, Razorpay payment link).
+- **Automated Testing Suite**:
+  - 8 new Vitest unit and integration tests (`revoraAgent.test.ts`) verifying policy gate enforcement, high-ticket human approval routing, decision approval/rejection workflows, and API endpoints.
+  - Total backend test suite expanded to **36/36 passing tests**.

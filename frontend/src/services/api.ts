@@ -7,6 +7,7 @@ import type {
 } from "../types/index";
 import type { DetectionResult } from "../types/incident";
 import type { OpportunitySummary, OpportunityPriority } from "../types/opportunity";
+import type { AgentCycleSummary, AgentPolicyStatus, DecisionExecutionState, AgentDecision } from "../types/agent";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -103,6 +104,44 @@ export async function fetchRecoveryOpportunities(params?: {
 
   const res = await fetch(`${API_BASE}/opportunities?${query.toString()}`);
   if (!res.ok) throw new Error("Failed to fetch recovery opportunities");
+  const json = await res.json();
+  return json.data;
+}
+
+// Phase 4: Revora Agent Core Engine
+export async function fetchAgentDecisions(params?: {
+  policyStatus?: AgentPolicyStatus;
+  executionState?: DecisionExecutionState;
+  search?: string;
+}): Promise<AgentCycleSummary> {
+  const query = new URLSearchParams();
+  if (params?.policyStatus) query.append("policyStatus", params.policyStatus);
+  if (params?.executionState) query.append("executionState", params.executionState);
+  if (params?.search) query.append("search", params.search);
+
+  const res = await fetch(`${API_BASE}/agent/decisions?${query.toString()}`);
+  if (!res.ok) throw new Error("Failed to fetch agent decisions");
+  const json = await res.json();
+  return json.data;
+}
+
+export async function triggerAgentCycle(): Promise<AgentCycleSummary> {
+  const res = await fetch(`${API_BASE}/agent/run`, { method: "POST" });
+  if (!res.ok) throw new Error("Failed to execute agent cycle");
+  const json = await res.json();
+  return json.data;
+}
+
+export async function approveAgentDecision(id: string): Promise<AgentDecision> {
+  const res = await fetch(`${API_BASE}/agent/approve/${id}`, { method: "POST" });
+  if (!res.ok) throw new Error(`Failed to approve decision ${id}`);
+  const json = await res.json();
+  return json.data;
+}
+
+export async function rejectAgentDecision(id: string): Promise<AgentDecision> {
+  const res = await fetch(`${API_BASE}/agent/reject/${id}`, { method: "POST" });
+  if (!res.ok) throw new Error(`Failed to reject decision ${id}`);
   const json = await res.json();
   return json.data;
 }

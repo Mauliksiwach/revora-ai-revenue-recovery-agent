@@ -4,7 +4,7 @@
 
 ![Revora Banner](https://img.shields.io/badge/Revora-AI%20Revenue%20Recovery%20Agent-3B82F6?style=for-the-badge&logo=shield)
 ![Buildathon](https://img.shields.io/badge/Razorpay%20AI%20Buildathon-2026-6366F1?style=for-the-badge)
-![Status](https://img.shields.io/badge/Phase%203-Completed-10B981?style=for-the-badge)
+![Status](https://img.shields.io/badge/Phase%204-Completed-10B981?style=for-the-badge)
 
 ### **Find lost revenue. Recover it. Learn from it.**
 

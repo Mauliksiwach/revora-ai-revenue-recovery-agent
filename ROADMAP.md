@@ -36,11 +36,12 @@ This document outlines the 7-phase build plan for **Revora — AI Revenue Recove
 
 ---
 
-### ⏳ Phase 4: Revora Agent (Core AI Agent)
-- Autonomous decision engine selecting bounded recovery actions (`WAIT`, `RETRY`, `SEND_PAYMENT_LINK`, `SEND_WHATSAPP`, `ESCALATE_TO_HUMAN`).
-- Deterministic Policy Gate enforcing merchant rules, communication cooldowns, and message caps.
-- Human Approval Queue for high-ticket transactions (>= ₹50,000).
-- Revora Agent command center view.
+### ✅ Phase 4: Revora Agent — Core AI Agent Engine (COMPLETED)
+- Autonomous decision engine selecting bounded recovery actions (`IMMEDIATE_PAYMENT_LINK`, `WHATSAPP_NUDGE`, `EMAIL_RECOVERY`, `SMART_RETRY`, `CONCIERGE_OUTREACH`, `SMART_SILENCE`).
+- Deterministic Policy Gate enforcing 24h communication cooldowns, contact caps (max 3), and Smart Silence outage checks.
+- Human Approval Queue for high-ticket transactions ($\ge \text{₹50,000}$) with 1-click Approve / Reject endpoints.
+- Interactive Revora Agent Control Room UI (`RevoraAgentDashboard` & `DecisionCard`).
+- 8 automated Vitest tests (36/36 total backend tests passing).
 
 ---
 

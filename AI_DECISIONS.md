@@ -70,18 +70,28 @@ $$\text{Estimated Recoverable INR} = \text{amountInr} \times \left( \frac{P_{rec
 
 ---
 
-## 4. Bounded Action Taxonomy (Phase 4 Scaffolding)
+---
 
-Revora Agent selects strictly from a predefined set of bounded actions:
+## 4. Bounded Action Taxonomy & Policy Safety Gates (Phase 4 Implemented)
 
-- `WAIT`: Hold outreach while monitoring external conditions.
-- `RETRY`: Execute background server-side re-attempt (for recurring/mandate failures).
-- `SEND_PAYMENT_LINK`: Dispatch an instant 1-click Razorpay payment link via SMS/WhatsApp.
-- `SEND_EMAIL`: Send a branded recovery email with alternate payment options.
-- `SEND_WHATSAPP`: Send a contextual WhatsApp message in the customer's preferred language (English / Hindi / Hinglish).
-- `SUGGEST_ALTERNATE_PAYMENT_METHOD`: Prompt customer to switch from failing card to UPI.
-- `ESCALATE_TO_HUMAN`: Flag high-value transactions (>= ₹50,000) for merchant concierge outreach.
-- `DO_NOT_CONTACT` (**Smart Silence**): Suppress all notifications to avoid customer irritation during systemic outages.
+Revora Autonomous Agent evaluates every candidate action against 4 deterministic Policy Safety Gates before execution:
+
+| Policy Gate | Condition / Rule | Policy Decision | Resulting Action |
+| :--- | :--- | :--- | :--- |
+| **Smart Silence Gate** | Active CBS outage or multi-rail failure detected for customer's bank. | `SUPPRESSED_SMART_SILENCE` | Action set to `SMART_SILENCE`; outreach suppressed. |
+| **High-Ticket Approval Gate** | Transaction amount $\ge \text{₹50,000}$. | `REQUIRES_HUMAN_APPROVAL` | Action routed to Human Approval Queue (`PENDING_APPROVAL`). |
+| **Communication Cooldown Gate** | Customer contacted within past 24 hours. | `BLOCKED_COOLDOWN` | Action suppressed (`SKIPPED`). |
+| **Contact Cap Gate** | Total contacts for customer $\ge 3$. | `BLOCKED_MAX_CONTACT_CAP` | Action suppressed (`SKIPPED`). |
+| **All Gates Passed** | Meets all safety criteria. | `APPROVED` | Bounded action dispatched safely (`EXECUTED`). |
+
+### 4.1 Supported Bounded Actions
+
+- `IMMEDIATE_PAYMENT_LINK`: Dispatches instant 15-minute 1-click Razorpay payment link via SMS/WhatsApp.
+- `WHATSAPP_NUDGE`: Sends conversational WhatsApp message with saved cart details.
+- `EMAIL_RECOVERY`: Sends branded recovery email with alternate payment options (UPI / Netbanking).
+- `SMART_RETRY`: Schedules off-peak automated server-side re-attempt for mandate/subscription failures.
+- `CONCIERGE_OUTREACH`: Escalates high-ticket transactions ($\ge \text{₹50,000}$) to merchant VIP phone concierge.
+- `SMART_SILENCE`: Suppresses customer outreach during active issuer infrastructure outages.
 
 ---
 

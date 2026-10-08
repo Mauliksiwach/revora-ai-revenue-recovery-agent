@@ -11,6 +11,7 @@ import { TransactionTable } from "./components/transactions/TransactionTable.js"
 import { TransactionDetailDrawer } from "./components/transactions/TransactionDetailDrawer.js";
 import { DetectiveDashboard } from "./components/intelligence/DetectiveDashboard.js";
 import { OpportunitiesDashboard } from "./components/opportunities/OpportunitiesDashboard.js";
+import { RevoraAgentDashboard } from "./components/agent/RevoraAgentDashboard.js";
 import {
   StatCardSkeleton,
   ChartSkeleton,
@@ -157,6 +158,8 @@ export function App() {
             <DetectiveDashboard />
           ) : activeTab === "recovery_opportunities" ? (
             <OpportunitiesDashboard />
+          ) : activeTab === "revora_agent" ? (
+            <RevoraAgentDashboard />
           ) : (
             <>
               {/* Page Heading */}
