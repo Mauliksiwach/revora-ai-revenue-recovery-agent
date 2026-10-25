@@ -6,6 +6,8 @@ import { OpportunityController } from "../controllers/opportunityController.js";
 import { AgentController } from "../controllers/agentController.js";
 import { SmartSilenceController } from "../controllers/smartSilenceController.js";
 import { RecoveryLabController } from "../controllers/recoveryLabController.js";
+import { TimelineController } from "../controllers/timelineController.js";
+import { OutreachController } from "../controllers/outreachController.js";
 
 export const apiRouter = Router();
 
@@ -46,3 +48,9 @@ apiRouter.post("/smartsilence/override", SmartSilenceController.toggleOverride);
 // Phase 6: Recovery Lab (Strategy Simulator)
 apiRouter.post("/lab/simulate", RecoveryLabController.runSimulation);
 apiRouter.get("/lab/strategies", RecoveryLabController.getStrategies);
+
+// Phase 7: Decision Timeline, Outcome Proof & Multi-Lingual Outreach
+apiRouter.get("/timeline/events", TimelineController.getEvents);
+apiRouter.get("/timeline/proof", TimelineController.getPerformanceProof);
+apiRouter.get("/outreach/templates", OutreachController.getTemplates);
+apiRouter.post("/outreach/preview", OutreachController.renderPreview);

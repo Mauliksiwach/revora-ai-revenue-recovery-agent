@@ -10,6 +10,8 @@ import type { OpportunitySummary, OpportunityPriority } from "../types/opportuni
 import type { AgentCycleSummary, AgentPolicyStatus, DecisionExecutionState, AgentDecision } from "../types/agent";
 import type { SmartSilenceStatusSummary, BankSwitchHealth } from "../types/smartsilence";
 import type { RecoveryLabRunResult, SimulationParams } from "../types/recoverylab";
+import type { TimelineEvent, AIPerformanceProof, TimelineFilterParams } from "../types/timeline";
+import type { LocalizedTemplate, OutreachPreviewRequest, OutreachPreviewResponse } from "../types/outreach";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -182,4 +184,50 @@ export async function runRecoveryLabSimulation(
   if (!res.ok) throw new Error("Failed to run Recovery Lab simulation");
   const json = await res.json();
   return json.data;
+}
+
+// Phase 7: Decision Timeline & Multi-Lingual Outreach
+export async function fetchTimelineEvents(params?: TimelineFilterParams): Promise<{
+  data: TimelineEvent[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}> {
+  const query = new URLSearchParams();
+  if (params?.eventType && params.eventType !== "ALL") query.append("eventType", params.eventType);
+  if (params?.actor && params.actor !== "ALL") query.append("actor", params.actor);
+  if (params?.search) query.append("search", params.search);
+  if (params?.transactionId) query.append("transactionId", params.transactionId);
+  if (params?.page) query.append("page", params.page.toString());
+  if (params?.limit) query.append("limit", params.limit.toString());
+
+  const res = await fetch(`${API_BASE}/timeline/events?${query.toString()}`);
+  if (!res.ok) throw new Error("Failed to fetch timeline events");
+  return res.json();
+}
+
+export async function fetchAIPerformanceProof(): Promise<AIPerformanceProof> {
+  const res = await fetch(`${API_BASE}/timeline/proof`);
+  if (!res.ok) throw new Error("Failed to fetch AI performance proof");
+  return res.json();
+}
+
+export async function fetchOutreachTemplates(): Promise<LocalizedTemplate[]> {
+  const res = await fetch(`${API_BASE}/outreach/templates`);
+  if (!res.ok) throw new Error("Failed to fetch outreach templates");
+  const json = await res.json();
+  return json.templates;
+}
+
+export async function previewOutreach(
+  req: OutreachPreviewRequest
+): Promise<OutreachPreviewResponse> {
+  const res = await fetch(`${API_BASE}/outreach/preview`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+  if (!res.ok) throw new Error("Failed to generate outreach preview");
+  return res.json();
 }

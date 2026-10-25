@@ -172,3 +172,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Automated Testing Suite**:
   - 6 new Vitest unit and integration tests (`recoveryLab.test.ts`) validating 6-strategy comparison, metric bounds, outage sensitivity, Revora recommendation ranking, and REST endpoints.
   - Total backend test suite expanded to **49/49 passing tests**.
+
+---
+
+## [Phase 7: Decision Timeline, Outcome Proof & Multi-Lingual Outreach] - 2026-08-29
+
+### Added
+- **Cryptographic Decision Timeline & Audit Ledger Engine (`TimelineService`)**:
+  - Immutable audit trail logging complete lifecycle events: `TRANSACTION_FAILED`, `INCIDENT_DETECTED`, `OPPORTUNITY_SCORED`, `POLICY_VERIFIED`, `ACTION_RECOMMENDED`, `HUMAN_APPROVAL_REQUESTED`, `ACTION_EXECUTED`, `SMART_SILENCE_ACTIVATED`, `PAYMENT_RECOVERED`, and `RECOVERY_EXPIRED`.
+  - Cryptographic verification with 16-character SHA-256 hash proofs generated per audit event.
+  - Multi-dimensional event filtering across event type, actor (`REVORA_AI`, `MERCHANT_ADMIN`, `SYSTEM_GATEWAY`, `CUSTOMER`), and full-text search.
+- **Empirical AI Performance & Outcome Proof**:
+  - Quantitative model metrics: Prediction Accuracy %, False Positive Rate %, Total Recovered Revenue, Outage-Shielded Revenue, and Net ROI Multiplier.
+  - Model Calibration Matrix comparing predicted probability brackets ($90-100\%$, $75-89\%$, $50-74\%$, $<50\%$) against empirical actual recovery conversions.
+- **Multi-Lingual Customer Outreach Engine (`OutreachService`)**:
+  - Localized recovery message templates in **English**, **Hindi (हिन्दी)**, and **Hinglish (Indian Conversational)**.
+  - Failure-reason contextualization: Incorrect UPI PIN, Bank CBS Server Timeout, Card OTP Drop-off, and Mandate Execution Failures.
+  - Dynamic 1-click Razorpay payment link interpolation and compliance check for TRAI DLT and WhatsApp Business messaging guidelines.
+- **REST API Endpoints**:
+  - `GET /api/v1/timeline/events`: Paginated cryptographic audit events with query filters.
+  - `GET /api/v1/timeline/proof`: Empirical AI performance proof and calibration data.
+  - `GET /api/v1/outreach/templates`: Localized template library across languages and channels.
+  - `POST /api/v1/outreach/preview`: Live interactive personalized recovery message preview.
+- **Decision Timeline & Outreach UI (`DecisionTimelineDashboard`, `AIPerformanceBanner`, `MultiLingualOutreachSandbox`, & `TimelineEventCard`)**:
+  - Complete control dashboard integrating performance KPIs, interactive Indian language preview sandbox with 1-click copy and Razorpay CTA, and chronological cryptographic event feed.
+  - Enabled all 7 phases in `Sidebar.tsx` and routed in `App.tsx`.
+- **Automated Testing Suite**:
+  - 10 new Vitest tests (5 in `timeline.test.ts` and 5 in `outreach.test.ts`) validating cryptographic hashes, event pagination, performance proof, localized templates, and REST endpoints.
+  - Complete project backend test suite expanded to **59/59 passing tests** across 10 test suites.

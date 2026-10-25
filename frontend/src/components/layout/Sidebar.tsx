@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "Decision Timeline",
       icon: History,
       phase: "Phase 7",
-      ready: false,
+      ready: true,
     },
   ];
 
@@ -128,15 +128,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
         <div className="bg-gradient-to-b from-gray-900 to-gray-900/60 p-3.5 rounded-xl border border-gray-800 text-xs">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-gray-300 font-semibold">Active Milestone</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">
-              1 of 7
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">
+              7 of 7 Complete
             </span>
           </div>
           <p className="text-gray-400 text-[11px] leading-relaxed mb-3">
-            Payment Intelligence Dashboard with real-time Indian payment failure patterns and synthetic generation.
+            Full Autonomous AI Revenue Recovery Agent platform with multi-lingual recovery and audit proof ready for judging.
           </p>
           <div className="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-blue-500 h-full w-[14.28%]" />
+            <div className="bg-emerald-500 h-full w-full" />
           </div>
         </div>
       </div>

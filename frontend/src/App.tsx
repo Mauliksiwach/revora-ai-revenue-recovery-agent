@@ -14,6 +14,7 @@ import { OpportunitiesDashboard } from "./components/opportunities/Opportunities
 import { RevoraAgentDashboard } from "./components/agent/RevoraAgentDashboard.js";
 import { SmartSilenceDashboard } from "./components/smartsilence/SmartSilenceDashboard.js";
 import { RecoveryLabDashboard } from "./components/lab/RecoveryLabDashboard.js";
+import { DecisionTimelineDashboard } from "./components/timeline/DecisionTimelineDashboard.js";
 import {
   StatCardSkeleton,
   ChartSkeleton,
@@ -166,6 +167,8 @@ export function App() {
             <SmartSilenceDashboard />
           ) : activeTab === "recovery_lab" ? (
             <RecoveryLabDashboard />
+          ) : activeTab === "decision_timeline" ? (
+            <DecisionTimelineDashboard />
           ) : (
             <>
               {/* Page Heading */}
