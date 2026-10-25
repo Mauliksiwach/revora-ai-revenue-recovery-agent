@@ -4,7 +4,7 @@
 
 ![Revora Banner](https://img.shields.io/badge/Revora-AI%20Revenue%20Recovery%20Agent-3B82F6?style=for-the-badge&logo=shield)
 ![Buildathon](https://img.shields.io/badge/Razorpay%20AI%20Buildathon-2026-6366F1?style=for-the-badge)
-![Status](https://img.shields.io/badge/Phase%205-Completed-10B981?style=for-the-badge)
+![Status](https://img.shields.io/badge/Phase%206-Completed-10B981?style=for-the-badge)
 
 ### **Find lost revenue. Recover it. Learn from it.**
 
@@ -215,12 +215,12 @@ npm --workspace=frontend run build
 | Phase | Milestone | Focus | Status |
 | :--- | :--- | :--- | :--- |
 | **Phase 1** | **Revenue Command Center** | Synthetic Generator, Payment Intelligence, KPI Engine | ✅ Completed |
-| **Phase 2** | **AI Revenue Detective** | Pattern Analysis, Issuer Degradation, Incident System | ⏳ Next |
-| **Phase 3** | **Recovery Probability Engine** | Customer Intent, Recovery Scoring, Recoverable Value | ⏳ Planned |
-| **Phase 4** | **Revora Agent** | Bounded Decision Engine, Policy Gate, High-Value Approval | ⏳ Planned |
-| **Phase 5** | **Smart Silence** | No-Action Intelligence, Incident Cooldowns, Pause/Resume | ⏳ Planned |
-| **Phase 6** | **Recovery Lab** | Multi-Strategy Simulation, ROI Comparison Engine | ⏳ Planned |
-| **Phase 7** | **Decision Timeline & Proof** | Audit Trail, Outcome Evaluation, Hinglish Outreach | ⏳ Planned |
+| **Phase 2** | **AI Revenue Detective** | Pattern Analysis, Issuer Degradation, Incident System | ✅ Completed |
+| **Phase 3** | **Recovery Probability Engine** | Customer Intent, Recovery Scoring, Recoverable Value | ✅ Completed |
+| **Phase 4** | **Revora Agent** | Bounded Decision Engine, Policy Gate, High-Value Approval | ✅ Completed |
+| **Phase 5** | **Smart Silence** | No-Action Intelligence, Incident Cooldowns, Pause/Resume | ✅ Completed |
+| **Phase 6** | **Recovery Lab** | Multi-Strategy Simulation, ROI Comparison Engine | ✅ Completed |
+| **Phase 7** | **Decision Timeline & Proof** | Audit Trail, Outcome Evaluation, Multi-Lingual Outreach | ⏳ Next |
 
 ---
 

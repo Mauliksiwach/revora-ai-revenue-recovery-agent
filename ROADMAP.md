@@ -55,10 +55,11 @@ This document outlines the 7-phase build plan for **Revora — AI Revenue Recove
 
 ---
 
-### ⏳ Phase 6: Recovery Lab (Strategy Simulator)
-- Multi-strategy recovery simulator comparing: Immediate Retry vs Delayed Retry vs Email vs WhatsApp vs Payment Link vs AI Adaptive.
-- Estimated revenue recovery, unnecessary contacts prevented, and ROI analytics.
-- Interactive scenario testing sandbox.
+### ✅ Phase 6: Recovery Lab (Strategy Simulator & ROI Benchmarking) (COMPLETED)
+- Counterfactual recovery simulator comparing 6 strategies: Do Nothing, Immediate Naive Retry, Email Only, WhatsApp Direct, Payment Link Only, and Revora AI Adaptive.
+- Estimated revenue recovery, unnecessary contacts prevented, customer friction scoring, and ROI analytics.
+- Interactive scenario testing sandbox with outage severity controls (`Normal`, `Mild Outage`, `Severe Outage`).
+- 6 automated Vitest tests (49/49 total backend tests passing).
 
 ---
 

@@ -59,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: "Recovery Lab",
       icon: FlaskConical,
       phase: "Phase 6",
-      ready: false,
+      ready: true,
     },
     {
       id: "decision_timeline",

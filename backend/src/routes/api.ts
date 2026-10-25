@@ -5,6 +5,7 @@ import { IncidentController } from "../controllers/incidentController.js";
 import { OpportunityController } from "../controllers/opportunityController.js";
 import { AgentController } from "../controllers/agentController.js";
 import { SmartSilenceController } from "../controllers/smartSilenceController.js";
+import { RecoveryLabController } from "../controllers/recoveryLabController.js";
 
 export const apiRouter = Router();
 
@@ -41,3 +42,7 @@ apiRouter.post("/agent/reject/:id", AgentController.rejectDecision);
 apiRouter.get("/smartsilence/status", SmartSilenceController.getStatusSummary);
 apiRouter.get("/smartsilence/history", SmartSilenceController.getEventHistory);
 apiRouter.post("/smartsilence/override", SmartSilenceController.toggleOverride);
+
+// Phase 6: Recovery Lab (Strategy Simulator)
+apiRouter.post("/lab/simulate", RecoveryLabController.runSimulation);
+apiRouter.get("/lab/strategies", RecoveryLabController.getStrategies);

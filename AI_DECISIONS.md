@@ -114,7 +114,22 @@ Smart Silence evaluates bank switch failure rates across rolling 30-minute windo
 
 ---
 
-## 6. Explainability & Evidence
+## 6. Counterfactual Strategy Simulation Framework (Phase 6 Implemented)
+
+The Recovery Lab models revenue yield, customer friction, and ROI across 6 distinct operational strategies on identical transaction datasets:
+
+| Strategy | Operational Mechanics | Expected Recovery Rate | Friction & Brand Impact |
+| :--- | :--- | :--- | :--- |
+| **`DO_NOTHING`** | No retries, no outreach. Absolute baseline. | $0.0\%$ | Zero friction; 100% revenue lost. |
+| **`IMMEDIATE_NAIVE_RETRY`** | Automatic instant retry without root cause diagnosis. | $\approx 18\%$ | **SEVERE**. Retries fail during bank outages; irritates buyers. |
+| **`EMAIL_ONLY`** | Automated branded recovery email. | $\approx 28\%$ | Low friction; slower open and response times. |
+| **`WHATSAPP_DIRECT`** | Conversational WhatsApp nudge. | $\approx 48\%$ | Moderate friction; high engagement on mobile. |
+| **`PAYMENT_LINK_ONLY`** | Instant 1-click Razorpay payment link via SMS/WhatsApp. | $\approx 62\%$ | Moderate friction; effective for OTP and checkout drops. |
+| **`REVORA_AI_ADAPTIVE`** | Dynamic strategy assignment ($P_{recovery}$) + Smart Silence outage protection + 24h cooldown gates. | **Peak Recovery Rate** | **LOW**. Highest net revenue with zero redundant contact spam. |
+
+---
+
+## 7. Explainability & Evidence
 
 Every AI decision in Revora MUST include:
 1. **Confidence Score** (e.g. `91% confidence`).

@@ -13,6 +13,7 @@ import { DetectiveDashboard } from "./components/intelligence/DetectiveDashboard
 import { OpportunitiesDashboard } from "./components/opportunities/OpportunitiesDashboard.js";
 import { RevoraAgentDashboard } from "./components/agent/RevoraAgentDashboard.js";
 import { SmartSilenceDashboard } from "./components/smartsilence/SmartSilenceDashboard.js";
+import { RecoveryLabDashboard } from "./components/lab/RecoveryLabDashboard.js";
 import {
   StatCardSkeleton,
   ChartSkeleton,
@@ -163,6 +164,8 @@ export function App() {
             <RevoraAgentDashboard />
           ) : activeTab === "smart_silence" ? (
             <SmartSilenceDashboard />
+          ) : activeTab === "recovery_lab" ? (
+            <RecoveryLabDashboard />
           ) : (
             <>
               {/* Page Heading */}

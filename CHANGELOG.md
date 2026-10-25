@@ -146,3 +146,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Automated Testing Suite**:
   - 7 new Vitest unit and integration tests (`smartSilence.test.ts`) validating switch health calculation, override toggling, event logging, and API endpoints.
   - Total backend test suite expanded to **43/43 passing tests**.
+
+---
+
+## [Phase 6: Recovery Lab — Strategy Simulator & ROI Benchmarking] - 2026-08-29
+
+### Added
+- **Recovery Lab Simulator Engine (`RecoveryLabService`)**:
+  - Counterfactual simulation engine comparing 6 revenue recovery strategies on identical transaction datasets:
+    1. **Do Nothing**: True baseline establishing 0% recovery, 0 outreach contacts.
+    2. **Immediate Naive Retry**: High-friction brute force retry model showing 18% recovery with severe customer churn risk and zero spam suppression.
+    3. **Email Recovery Only**: Low-friction channel delivering 28% recovery.
+    4. **WhatsApp Direct Nudge**: High-conversion conversational channel achieving 48% recovery with moderate friction.
+    5. **Razorpay Payment Link**: Direct 1-click recovery achieving 62% recovery.
+    6. **Revora AI Adaptive Agent**: Dynamic strategy assignment with Smart Silence outage protection, achieving peak recovery (+₹ advantage) while suppressing 38% unnecessary contacts during bank downtime.
+  - Configurable scenario testing support for Simulated Issuer Outage Severity (`NONE`, `MILD`, `SEVERE`).
+  - Key financial performance metrics: Net Recovered Revenue, Recovery Rate %, Contact Volume, Unnecessary Contacts Prevented, Outreach Cost, and Net ROI Multiplier.
+- **REST API Endpoints**:
+  - `POST /api/v1/lab/simulate`: Runs counterfactual simulation across all strategies with custom outage severity parameters.
+  - `GET /api/v1/lab/strategies`: Returns detailed metadata for supported recovery strategies.
+- **Recovery Lab Dashboard UI (`RecoveryLabDashboard` & `StrategyComparisonCard`)**:
+  - Interactive simulator dashboard with outage severity slider controls (`Normal`, `Mild Outage`, `Severe Multi-Bank Outage`).
+  - Net Revenue Advantage hero card highlighting incremental revenue gained by Revora AI Adaptive over single-channel alternatives.
+  - Side-by-side strategy benchmark cards with visual revenue recovery progress bars, outreach contact counters, spam prevention indicators, cost, ROI multipliers, and customer friction ratings.
+- **Automated Testing Suite**:
+  - 6 new Vitest unit and integration tests (`recoveryLab.test.ts`) validating 6-strategy comparison, metric bounds, outage sensitivity, Revora recommendation ranking, and REST endpoints.
+  - Total backend test suite expanded to **49/49 passing tests**.

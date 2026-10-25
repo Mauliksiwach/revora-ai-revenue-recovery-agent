@@ -4,10 +4,10 @@ This document records active limitations, design constraints, and simulation bou
 
 ---
 
-## 1. Phase 1, 2, 3, 4 & 5 Boundaries
+## 1. Phases 1, 2, 3, 4, 5 & 6 Boundaries
 
 - **Simulation Mode Active**: Transaction data is generated synthetically to establish realistic Indian payment failure patterns (including seeded HDFC UPI degradation spikes). While the backend architecture supports live Supabase PostgreSQL connection, zero-config in-memory operation is default when external credentials are not set.
-- **Phases 1, 2, 3, 4 & 5 Active**: *Revenue Command Center* (Phase 1), *AI Revenue Detective* (Phase 2), *Recovery Opportunities* (Phase 3), *Revora Agent Control Room* (Phase 4), and *Smart Silence* (Phase 5) are fully functional. Navigation items for Phase 6 and Phase 7 are badged with their upcoming milestone targets in the sidebar.
+- **Phases 1, 2, 3, 4, 5 & 6 Active**: *Revenue Command Center* (Phase 1), *AI Revenue Detective* (Phase 2), *Recovery Opportunities* (Phase 3), *Revora Agent Control Room* (Phase 4), *Smart Silence* (Phase 5), and *Recovery Lab* (Phase 6) are fully functional. The navigation item for Phase 7 is badged with its upcoming milestone target in the sidebar.
 
 ---
 

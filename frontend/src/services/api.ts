@@ -9,6 +9,7 @@ import type { DetectionResult } from "../types/incident";
 import type { OpportunitySummary, OpportunityPriority } from "../types/opportunity";
 import type { AgentCycleSummary, AgentPolicyStatus, DecisionExecutionState, AgentDecision } from "../types/agent";
 import type { SmartSilenceStatusSummary, BankSwitchHealth } from "../types/smartsilence";
+import type { RecoveryLabRunResult, SimulationParams } from "../types/recoverylab";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -165,6 +166,20 @@ export async function toggleSmartSilenceOverride(
     body: JSON.stringify({ bank, forceSuppressed }),
   });
   if (!res.ok) throw new Error(`Failed to toggle Smart Silence override for ${bank}`);
+  const json = await res.json();
+  return json.data;
+}
+
+// Phase 6: Recovery Lab Strategy Simulator
+export async function runRecoveryLabSimulation(
+  params?: SimulationParams
+): Promise<RecoveryLabRunResult> {
+  const res = await fetch(`${API_BASE}/lab/simulate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params || {}),
+  });
+  if (!res.ok) throw new Error("Failed to run Recovery Lab simulation");
   const json = await res.json();
   return json.data;
 }
