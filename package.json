@@ -11,5 +11,8 @@
     "dev:frontend": "npm --workspace=frontend run dev",
     "build": "npm run build --workspaces",
     "test": "npm --workspace=backend run test"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.43.1"
   }
 }
