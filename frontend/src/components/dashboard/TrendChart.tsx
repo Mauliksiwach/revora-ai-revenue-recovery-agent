@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -76,11 +76,11 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trends }) => {
 
         <div className="flex items-center gap-3 text-xs text-gray-400">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#6B7F64" }} />
             <span>Success</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#D7A49A" }} />
             <span>Failures / Drops</span>
           </div>
         </div>
@@ -91,33 +91,33 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trends }) => {
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorSuccess" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#6B7F64" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="#6B7F64" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="colorFailure" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#EF4444" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#EF4444" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#D7A49A" stopOpacity={0.45} />
+                <stop offset="95%" stopColor="#D7A49A" stopOpacity={0.0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1F293D" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#E5DFD5" vertical={false} />
             <XAxis
               dataKey="time"
-              stroke="#6B7280"
+              stroke="#7D887D"
               fontSize={11}
               tickLine={false}
-              axisLine={{ stroke: "#1F293D" }}
+              axisLine={{ stroke: "#E5DFD5" }}
             />
             <YAxis
-              stroke="#6B7280"
+              stroke="#7D887D"
               fontSize={11}
               tickLine={false}
-              axisLine={{ stroke: "#1F293D" }}
+              axisLine={{ stroke: "#E5DFD5" }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Area
               type="monotone"
               dataKey="successes"
-              stroke="#10B981"
+              stroke="#6B7F64"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorSuccess)"
@@ -126,7 +126,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trends }) => {
             <Area
               type="monotone"
               dataKey="failures"
-              stroke="#EF4444"
+              stroke="#D7A49A"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorFailure)"

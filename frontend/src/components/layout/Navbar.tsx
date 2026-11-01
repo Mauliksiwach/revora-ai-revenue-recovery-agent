@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Activity, ShieldCheck, Zap } from "lucide-react";
 
 interface NavbarProps {
@@ -10,14 +10,14 @@ export const Navbar: React.FC<NavbarProps> = ({ serverConnected }) => {
     <header className="sticky top-0 z-30 bg-[#0B0F19]/90 backdrop-blur-md border-b border-gray-800/80 px-6 py-3.5 flex items-center justify-between">
       {/* Brand Identity */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold text-lg tracking-wider">
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#55674F] to-[#6B7F64] flex items-center justify-center shadow-md shadow-[#6B7F64]/20 text-white font-bold text-lg tracking-wider">
           R
         </div>
         <div>
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-xl tracking-tight text-white font-sans">REVORA</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              v1.0 • Phase 1
+            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
+              All 7 Phases Active
             </span>
           </div>
           <p className="text-xs text-gray-400 font-medium">AI Revenue Recovery</p>
