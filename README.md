@@ -181,9 +181,9 @@ cp .env.example .env
 
 ---
 
-## 10. Running the Application
+## 10. Running the Application & Live Deployment
 
-### Option A: Run Both Backend & Frontend Concurrently
+### Local Development
 ```bash
 # Start backend on http://localhost:5000
 npm run dev:backend
@@ -191,8 +191,24 @@ npm run dev:backend
 # In a separate terminal, start frontend on http://localhost:5173
 npm run dev:frontend
 ```
-
 Open `http://localhost:5173` in your browser.
+
+### Single-Command Production Build & Run
+```bash
+# Build both workspaces
+npm run build
+
+# Start single Express server (serves API on /api/v1 and React SPA on /)
+npm start
+```
+
+### 🚀 1-Click Live Deployment (Render / Railway / Docker)
+Revora includes zero-config deployment manifests:
+- **Render**: Connect repository, use `npm install && npm run build` and `npm start` (see [`render.yaml`](./render.yaml)).
+- **Railway**: Bundled with [`railway.json`](./railway.json) for automatic deployment.
+- **Docker**: Production multi-stage [`Dockerfile`](./Dockerfile).
+
+👉 Detailed instructions in **[DEPLOYMENT.md](./DEPLOYMENT.md)**.
 
 ---
 

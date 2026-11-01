@@ -1,4 +1,4 @@
-﻿import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { TransactionFilterSchema } from "../types/transaction.js";
 import { dbService } from "../services/databaseService.js";
 
@@ -24,7 +24,7 @@ export class TransactionController {
 
   public static async getTransactionById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const transaction = await dbService.getTransactionById(id);
 
       if (!transaction) {

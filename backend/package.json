@@ -1,6 +1,7 @@
 {
   "name": "revora-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Revora — AI Revenue Recovery Agent Backend API",
   "main": "dist/index.js",
   "scripts": {

@@ -13,7 +13,9 @@ import type { RecoveryLabRunResult, SimulationParams } from "../types/recoveryla
 import type { TimelineEvent, AIPerformanceProof, TimelineFilterParams } from "../types/timeline";
 import type { LocalizedTemplate, OutreachPreviewRequest, OutreachPreviewResponse } from "../types/outreach";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? "/api/v1" : "http://localhost:5000/api/v1");
 
 export async function fetchHealth(): Promise<{ status: string; service: string }> {
   const res = await fetch(`${API_BASE}/health`);

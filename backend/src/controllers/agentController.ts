@@ -32,7 +32,7 @@ export class AgentController {
 
   public static approveDecision(req: Request, res: Response, next: NextFunction): void {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const approved = revoraAgentService.approveDecision(id);
       if (!approved) {
         res.status(404).json({
@@ -49,7 +49,7 @@ export class AgentController {
 
   public static rejectDecision(req: Request, res: Response, next: NextFunction): void {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const rejected = revoraAgentService.rejectDecision(id);
       if (!rejected) {
         res.status(404).json({

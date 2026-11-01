@@ -7,6 +7,7 @@
     "frontend"
   ],
   "scripts": {
+    "start": "node backend/dist/index.js",
     "dev:backend": "npm --workspace=backend run dev",
     "dev:frontend": "npm --workspace=frontend run dev",
     "build": "npm run build --workspaces",

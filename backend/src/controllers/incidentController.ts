@@ -13,7 +13,7 @@ export class IncidentController {
 
   public static getIncidentById(req: Request, res: Response, next: NextFunction): void {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const incident = revenueDetectiveService.getIncidentById(id);
       if (!incident) {
         res.status(404).json({

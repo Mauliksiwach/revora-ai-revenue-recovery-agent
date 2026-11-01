@@ -23,7 +23,7 @@ export class OpportunityController {
 
   public static getOpportunityById(req: Request, res: Response, next: NextFunction): void {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const opportunity = recoveryScoringService.getOpportunityById(id);
       if (!opportunity) {
         res.status(404).json({

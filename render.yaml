@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: revora-ai-recovery-agent
+    env: node
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ENABLE_IN_MEMORY_FALLBACK
+        value: "true"
+      - key: SIMULATION_DATA_SIZE
+        value: "1200"

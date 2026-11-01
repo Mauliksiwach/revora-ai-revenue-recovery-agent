@@ -133,12 +133,15 @@ export class RecoveryScoringService {
         email: tx.customerEmail,
         phone: tx.customerPhone,
         totalOrders: 3,
-        totalSpentInr: 12000,
+        successfulOrders: 2,
+        lifetimeValueInr: 12000,
+        preferredMethod: tx.paymentMethod,
+        preferredLanguage: "hinglish" as const,
         createdAt: tx.createdAt,
       };
 
-      const categoryScore = CATEGORY_BASE_SCORES[tx.failureCategory] ?? 60;
-      const historyScore = calculateHistoryScore(cust.totalOrders, cust.totalSpentInr);
+      const categoryScore = tx.failureCategory ? (CATEGORY_BASE_SCORES[tx.failureCategory] ?? 60) : 60;
+      const historyScore = calculateHistoryScore(cust.totalOrders, cust.lifetimeValueInr);
       const amountScore = calculateAmountScore(tx.amountInr);
       const recencyScore = calculateRecencyScore(tx.createdAt);
 
@@ -176,12 +179,12 @@ export class RecoveryScoringService {
         customerName: cust.name,
         customerEmail: cust.email,
         customerPhone: cust.phone,
-        customerLtvInr: cust.totalSpentInr,
+        customerLtvInr: cust.lifetimeValueInr,
         amountInr: tx.amountInr,
         paymentMethod: tx.paymentMethod,
         issuerBank: tx.issuerBank,
-        failureCategory: tx.failureCategory,
-        failureReason: tx.failureReason,
+        failureCategory: tx.failureCategory || "TECHNICAL_TIMEOUT",
+        failureReason: tx.failureReason || "Transaction failed",
         failedAt: tx.createdAt,
         recoveryScorePct,
         estimatedRecoverableInr,

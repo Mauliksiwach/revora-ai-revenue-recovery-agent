@@ -112,12 +112,12 @@ export class TimelineService {
           customerPhone: tx.customerPhone,
           amountInr: tx.amountInr,
           paymentMethod: tx.paymentMethod,
-          issuer: tx.issuer,
-          summary: `Payment failed via ${tx.paymentMethod} (${tx.issuer}): ${tx.errorCode || "TIMEOUT"}`,
-          evidenceNarrative: `Gateway responded with error: ${tx.errorMessage || "Transaction timed out during authentication"}.`,
+          issuer: tx.issuerBank,
+          summary: `Payment failed via ${tx.paymentMethod} (${tx.issuerBank}): ${tx.failureCode || "TIMEOUT"}`,
+          evidenceNarrative: `Gateway responded with error: ${tx.failureReason || "Transaction timed out during authentication"}.`,
           auditHash: computeHash(`${failId}:${tx.id}:${tx.amountInr}:${baseTime}`),
           metadata: {
-            errorCode: tx.errorCode,
+            errorCode: tx.failureCode,
             failureCategory: tx.failureCategory,
           },
         });
@@ -126,6 +126,8 @@ export class TimelineService {
       // Event 2: Opportunity Scoring
       const scoreTime = baseTime + 1200; // 1.2s later
       const scoreId = `evt_score_${decision.id}`;
+      const pRec = decision.recoveryScorePct / 100;
+      const priority = decision.recoveryScorePct >= 75 ? "HIGH" : decision.recoveryScorePct >= 50 ? "MEDIUM" : "LOW";
       events.push({
         id: scoreId,
         timestamp: new Date(scoreTime).toISOString(),
@@ -137,13 +139,13 @@ export class TimelineService {
         customerName: decision.customerName,
         amountInr: decision.amountInr,
         paymentMethod: tx?.paymentMethod || "UPI",
-        issuer: tx?.issuer || "HDFC",
-        summary: `Recovery probability evaluated: ${(decision.pRecovery * 100).toFixed(0)}% (${decision.priority} Priority)`,
+        issuer: tx?.issuerBank || "HDFC",
+        summary: `Recovery probability evaluated: ${decision.recoveryScorePct}% (${priority} Priority)`,
         evidenceNarrative: `Score calculated using customer history, failure code recovery potential, and recency elasticity.`,
-        auditHash: computeHash(`${scoreId}:${decision.id}:${decision.pRecovery}`),
+        auditHash: computeHash(`${scoreId}:${decision.id}:${pRec}`),
         metadata: {
-          pRecovery: decision.pRecovery,
-          priority: decision.priority,
+          pRecovery: pRec,
+          priority,
           selectedAction: decision.selectedAction,
         },
       });
@@ -163,13 +165,13 @@ export class TimelineService {
         customerName: decision.customerName,
         amountInr: decision.amountInr,
         paymentMethod: tx?.paymentMethod || "UPI",
-        issuer: tx?.issuer || "HDFC",
+        issuer: tx?.issuerBank || "HDFC",
         summary: `Policy Gates: ${decision.policyStatus}`,
         evidenceNarrative: decision.reasoningNarrative,
         auditHash: computeHash(`${policyId}:${decision.policyStatus}:${policyTime}`),
         metadata: {
           policyStatus: decision.policyStatus,
-          checks: decision.policyChecks,
+          checks: decision.policyCheck,
         },
       });
 
@@ -188,7 +190,7 @@ export class TimelineService {
           customerName: decision.customerName,
           amountInr: decision.amountInr,
           paymentMethod: tx?.paymentMethod || "UPI",
-          issuer: tx?.issuer || "HDFC",
+          issuer: tx?.issuerBank || "HDFC",
           summary: `Dispatched ${decision.selectedAction} outreach link`,
           evidenceNarrative: `Automated recovery nudge delivered via SMS/WhatsApp with Razorpay 1-click link.`,
           auditHash: computeHash(`${execId}:${decision.selectedAction}:${actionTime}`),
@@ -203,7 +205,7 @@ export class TimelineService {
         const outcomeHash = computeHash(`${decision.id}:${decision.amountInr}`);
         const hashSeed = parseInt(outcomeHash.slice(0, 4), 16) / 0xffff;
 
-        if (hashSeed <= decision.pRecovery) {
+        if (hashSeed <= pRec) {
           // Success: Payment Recovered!
           recoveredCount++;
           recoveredRevenueInr += decision.amountInr;
@@ -219,7 +221,7 @@ export class TimelineService {
             customerName: decision.customerName,
             amountInr: decision.amountInr,
             paymentMethod: tx?.paymentMethod || "UPI",
-            issuer: tx?.issuer || "HDFC",
+            issuer: tx?.issuerBank || "HDFC",
             summary: `₹${decision.amountInr.toLocaleString("en-IN")} successfully recovered!`,
             evidenceNarrative: `Customer authorized payment via secondary rail following Revora nudge.`,
             auditHash: computeHash(`${recId}:RECOVERED:${decision.amountInr}`),
@@ -243,7 +245,7 @@ export class TimelineService {
             customerName: decision.customerName,
             amountInr: decision.amountInr,
             paymentMethod: tx?.paymentMethod || "UPI",
-            issuer: tx?.issuer || "HDFC",
+            issuer: tx?.issuerBank || "HDFC",
             summary: `Recovery window expired for ₹${decision.amountInr.toLocaleString("en-IN")}`,
             evidenceNarrative: `Customer did not engage within 2-hour window. Outreach marked closed without spamming.`,
             auditHash: computeHash(`${expId}:EXPIRED`),
@@ -262,8 +264,8 @@ export class TimelineService {
           customerName: decision.customerName,
           amountInr: decision.amountInr,
           paymentMethod: tx?.paymentMethod || "UPI",
-          issuer: tx?.issuer || "HDFC",
-          summary: `Smart Silence: Outreach suppressed for ${tx?.issuer || "Bank"} downtime`,
+          issuer: tx?.issuerBank || "HDFC",
+          summary: `Smart Silence: Outreach suppressed for ${tx?.issuerBank || "Bank"} downtime`,
           evidenceNarrative: `Outreach was deliberately withheld to protect merchant brand reputation and prevent 100% failure rate during CBS downtime.`,
           auditHash: computeHash(`${silId}:SILENCE`),
         });
@@ -280,7 +282,7 @@ export class TimelineService {
           customerName: decision.customerName,
           amountInr: decision.amountInr,
           paymentMethod: tx?.paymentMethod || "UPI",
-          issuer: tx?.issuer || "HDFC",
+          issuer: tx?.issuerBank || "HDFC",
           summary: `Human approval required: High-ticket order (₹${decision.amountInr.toLocaleString("en-IN")})`,
           evidenceNarrative: `Routed to Merchant Human Approval Queue under ₹50,000 threshold governance policy.`,
           auditHash: computeHash(`${reqId}:HUMAN_APPROVAL`),
