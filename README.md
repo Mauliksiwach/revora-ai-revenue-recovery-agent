@@ -2,11 +2,14 @@
 
 <div align="center">
 
-![Revora Banner](https://img.shields.io/badge/Revora-AI%20Revenue%20Recovery%20Agent-3B82F6?style=for-the-badge&logo=shield)
+![Revora Banner](https://img.shields.io/badge/Revora-AI%20Revenue%20Recovery%20Agent-6B7F64?style=for-the-badge&logo=shield)
 ![Buildathon](https://img.shields.io/badge/Razorpay%20AI%20Buildathon-2026-6366F1?style=for-the-badge)
-![Status](https://img.shields.io/badge/All%207%20Phases-Completed-10B981?style=for-the-badge)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-onrender.com-10B981?style=for-the-badge&logo=render)](https://revora-ai-revenue-recovery-agent.onrender.com)
+![Status](https://img.shields.io/badge/All%207%20Phases-Live%20%26%20Complete-10B981?style=for-the-badge)
 
 ### **Find lost revenue. Recover it. Learn from it.**
+
+**🌐 Live Demo Application:** [https://revora-ai-revenue-recovery-agent.onrender.com](https://revora-ai-revenue-recovery-agent.onrender.com)
 
 *An AI-native revenue recovery platform that detects revenue at risk, diagnoses payment failures, recommends safe recovery actions, and measures recovered revenue.*
 
